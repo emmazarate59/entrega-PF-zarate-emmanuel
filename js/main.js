@@ -34,7 +34,7 @@ const stockProductos = [
         precio: 73000,
         img: "img/varlion-pala-padel-bourne-summum-prism-w.jpg",
     },
-    
+
 ]
 
 let carrito = []
@@ -42,6 +42,7 @@ let carrito = []
 const contenedor = document.querySelector("#contenedor")
 const vaciarCarrito = document.querySelector("#vaciarCarrito")
 const precioTotal = document.querySelector("#precioTotal")
+const procesarCompra = document.querySelector("#procesarCompra")
 
 document.addEventListener("DOMContentLoaded", () => {
     carrito = JSON.parse(localStorage.getItem("carrito")) || []
@@ -61,6 +62,19 @@ stockProductos.forEach((prod) => {
 </div>
     
     `
+})
+
+procesarCompra.addEventListener("click", () => {
+    if (carrito.length === 0) {
+        Swal.fire({
+            title: "¡Tu carrito está vacio!",
+            text: "Compra algo para continuar con la compra",
+            icon: "error",
+            confirmButtonText: "Aceptar",
+    })
+} else {
+    location.href = "http://link.mercadopago.com.ar/padelfactory"
+}
 })
 
 vaciarCarrito.addEventListener("click", () => {
