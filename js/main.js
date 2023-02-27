@@ -1,41 +1,5 @@
-const stockProductos = [
-    {
-        id: 1,
-        nombre: "Babolat Pala Pádel Tech Viper Juan Lebrón",
-        cantidad: 1,
-        precio: 350000,
-        img: "img/babolat_lebron.jpg",
-    },
-    {
-        id: 2,
-        nombre: "Nox Pala Pádel AT10 Genius By Agustin Tapia",
-        cantidad: 1,
-        precio: 125000,
-        img: "img/nox_tapia.jpg",
-    },
-    {
-        id: 3,
-        nombre: "Adidas Pala Pádel Rx Carbon",
-        cantidad: 1,
-        precio: 57000,
-        img: "img/adidas_carbon.jpg",
-    },
-    {
-        id: 4,
-        nombre: "Drop Shot Pala Pádel Conqueror 10",
-        cantidad: 1,
-        precio: 120000,
-        img: "img/drop_shot.jpg",
-    },
-    {
-        id: 5,
-        nombre: "Varlion Pala Pádel Bourne Summum Prism W",
-        cantidad: 1,
-        precio: 73000,
-        img: "img/varlion-pala-padel-bourne-summum-prism-w.jpg",
-    },
 
-]
+
 
 let carrito = []
 
@@ -48,21 +12,29 @@ document.addEventListener("DOMContentLoaded", () => {
     carrito = JSON.parse(localStorage.getItem("carrito")) || []
     mostrarCarrito()
 })
-stockProductos.forEach((prod) => {
-    const { id, nombre, cantidad, precio, img } = prod
-    contenedor.innerHTML += `
-    <div class="card mt-3 container" style="width: 20rem;">
-<img class="card-img-top mt-2" src="${img}" alt="Card image cap">
-<div class="card-body">
-    <h5 class="card-title">${nombre}</h5>
-    <p class="card-text">Precio: ${precio}</p>
-    <p class="card-text">Cantidad: ${cantidad}</p>
-    <button oneclick="agregarProductor(${id})" class="btn btn-warning" onclick="agregarProducto(${id})">Comprar Producto</button>
+
+fetch("./data/productos.json")
+    .then((reponse) => reponse.json())
+    .then((data) => {
+
+        data.forEach((prod) => {
+            const { id, nombre, cantidad, precio, img } = prod
+            contenedor.innerHTML += `
+        <div class="card mt-3 container" style="width: 20rem;">
+    <img class="card-img-top mt-2" src="${img}" alt="Card image cap">
+    <div class="card-body">
+        <h5 class="card-title">${nombre}</h5>
+        <p class="card-text">Precio: ${precio}</p>
+        <p class="card-text">Cantidad: ${cantidad}</p>
+        <button oneclick="agregarProductor(${id})" class="btn btn-warning" onclick="agregarProducto(${id})">Comprar Producto</button>
+        </div>
     </div>
-</div>
-    
-    `
-})
+        
+        `
+        })
+    })
+
+
 
 procesarCompra.addEventListener("click", () => {
     if (carrito.length === 0) {
@@ -71,10 +43,10 @@ procesarCompra.addEventListener("click", () => {
             text: "Compra algo para continuar con la compra",
             icon: "error",
             confirmButtonText: "Aceptar",
-    })
-} else {
-    location.href = "http://link.mercadopago.com.ar/padelfactory"
-}
+        })
+    } else {
+        location.href = "http://link.mercadopago.com.ar/padelfactory"
+    }
 })
 
 vaciarCarrito.addEventListener("click", () => {
@@ -93,7 +65,7 @@ function agregarProducto(id) {
             }
         })
     } else {
-        const item = stockProductos.find((prod) => prod.id === id)
+        const item = prod.find((prod) => prod.id === id)
         carrito.push(item)
 
     }
